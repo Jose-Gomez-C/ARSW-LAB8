@@ -50,20 +50,31 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
     * 1000000
+    ![Imagen1](https://i.ibb.co/sj6VgTV/image.png)
     * 1010000
+    ![Imagen2](https://i.ibb.co/MZXT8YG/1.png)
     * 1020000
+    ![Imagen3](https://i.ibb.co/XFxBG9z/2.png)
     * 1030000
+    ![Imagen4](https://i.ibb.co/grqRC1W/3.png)
     * 1040000
+    ![Imagen5](https://i.ibb.co/f93TKrr/4.png)
     * 1050000
+    ![Imagen6](https://i.ibb.co/zbyr2zP/5.png)
     * 1060000
+    ![Imagen7](https://i.ibb.co/9nt7Kfj/6.png)
     * 1070000
+    ![Imagen8](https://i.ibb.co/Bz1DFqd/7.png)
     * 1080000
-    * 1090000    
+    ![Imagen9](https://i.ibb.co/d4FJ6Jq/8.png)
+    * 1090000
+    ![Imagen10](https://i.ibb.co/f2qPCC4/9.png)
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
-![Imágen 2](images/part1/part1-vm-cpu.png)
-
+* ![Imágen 2](images/part1/part1-vm-cpu.png)
+* ![CPU1](https://i.ibb.co/3Ff9gh7/CPU.png)
+* ![cpu2](https://i.ibb.co/yYkxprz/CPU2.png)
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
     * Instale newman con el comando `npm install newman -g`. Para conocer más de Newman consulte el siguiente [enlace](https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
     * Diríjase hasta la ruta `FibonacciApp/postman` en una maquina diferente a la VM.
@@ -75,30 +86,87 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
     ```
 
+* ![prueba](https://i.ibb.co/LCXsmzp/Pruebas1.png)
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
 ![Imágen 3](images/part1/part1-vm-resize.png)
 
+
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
+    * 1000000
+    ![Imagen1](https://i.ibb.co/8bTwJsm/b0.png)
+    * 1010000
+    ![Imagen2](https://i.ibb.co/6N2JL1P/b1.png)
+    * 1020000
+    ![Imagen3](https://i.ibb.co/0BpbtQT/b2.png)
+    * 1030000
+    ![Imagen4](https://i.ibb.co/F03KD8H/b3.png)
+    * 1040000
+    ![Imagen5](https://i.ibb.co/5K6Pm0G/b4.png)
+    * 1050000
+    ![Imagen6](https://i.ibb.co/dmRxxXz/b5.png)
+    * 1060000
+    ![Imagen7](https://i.ibb.co/92y80NF/b6.png)
+    * 1070000
+    ![Imagen8](https://i.ibb.co/HBCcswP/b7.png)
+    * 1080000
+    ![Imagen9](https://i.ibb.co/99cFzML/b8.png)
+    * 1090000
+    ![Imagen10](https://i.ibb.co/WtqgzT4/b9.png)
+    > **Consumo de CPU:**
+    * ![cpu1](https://i.ibb.co/VQSPBgx/bCPU.png)
+    * ![cpu2](https://i.ibb.co/WBMRx9v/bcpu2.png)
+    > **Resultado de las pruebas:**
+    * ![prueba2](https://i.ibb.co/JCfwmyh/pruebas2.png)
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
+  > **Al realizar escalamiento vertical no se logra el objetivo, ya que el porcentaje de consumo de la CPU, disminuye con el cambio de temaño pero el tiempo de respuesta sigue       muy similar a la prueba realizada anteriormente lo que ocasiona que no pasen todas las pruebas.**
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
 **Preguntas**
 
 1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
+> Hay 5 recursos que se crean con la maquina virtual y son: 
+* Dirección IP pública
+* Grupo de seguridad de red
+* Interfaz de red
+* Disco
+* Clave SSH
+
 2. ¿Brevemente describa para qué sirve cada recurso?
+> * Direccion IP pública: Permiten a los recursos de Internet la comunicación entrante a los recursos de Azure. Permiten que los recursos de Azure se comuniquen con los servicios de Azure orientados al público e Internet. Hasta que cancele la asignación, la dirección estará dedicada al recurso.
+> * Grupo de seguridad de red: se utiliza para filtrar el tráfico de red hacia y desde los recursos de Azure de una red virtual de Azure. Un grupo de seguridad de red contiene reglas de seguridad que permiten o deniegan el tráfico de red entrante o el tráfico de red saliente de varios tipos de recursos de Azure.
+
+
+
+> * Interfaz de red: permite que una máquina virtual de Azure se comunique con los recursos de Internet, Azure y locales. En su lugar, puede crear interfaces de red con una configuración personalizada y agregar una o varias interfaces de red a una máquina virtual al crearla, como también puede cambiar la configuración predeterminada de la interfaz de red en una interfaz de red existente.
+
+> * Disco: Se encara del almacenamiento de la maquina virtual y nos indica la capacidad de la RAM, Discos de datos, vCPU, entre otros.
+
+> * Clave SSH: es la clave por la cual se tendrá acceso a la VM  como método de autenticación esto hace que sea mucho mas difícil acceder a la maquina con ataques de adivinación por fuerza bruta 
+
+
 3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+> * Al momento de realizar la conexión con la aplicación se crea un proceso que ejecuta la aplicación, por ende cuando la cerremos, finaliza el proceso de ejecutar la aplicación. La inbound port rule se realiza por el puerto 3000 para desplegar la aplicación de NodeJS de manera publica y asi poder ver la aplicación en internet 
+
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
+* ![Tabla de tiempos](https://i.ibb.co/th7t4Qk/tabla-de-tiempos.png)
+> * Aunque vemos una mejora en la mayoría de los casos a la mitad del tiempo, no creemos que sea lo correcto para una aplicación que solo debe hacer operaciones matemáticas. Como evidenciamos la implementación que se hace de Fibonacci no es la correcta para aprovechar el aumento en el hardware. 
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
     * Si hubo fallos documentelos y explique.
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
+> * El tamaño B1ls tiene menos capacidad y es mucho más económica que el B2ms. el tamaño B1ls esta solo disponible para el sistema operativo Linux. Estos tamaños por lo general entan pensados para  ser utilizados en ambientes de prueba a bajos costos
+* ![Tabla de comparacion](https://i.ibb.co/6tHgz83/BsVsBm.png)
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
+> **No se observa un drástico cambio en los tiempos, aunque aumente las características de hardware la diferencia es mínima. En cambio, si miramos los costos si se encuentra una gran diferencia. Según lo anterior evidenciamos que nos es una buena solución para este escenario. Cuando se cambia el tamaño se pierde la disponibilidad de la maquina mientras se realizan cambios.**
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
+> **Se reiniciar nuestra instancia y la aplicación deja de correr por lo cual debemos ingresar a la misma y volver a poner en ejecución la aplicación. Los efectos que causan esto es que no estará disponible hasta que se vuelva a iniciar la maquina y la aplicación.**
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+> **SI hubo mejora ya que en la B1ls se consumió un total del 62.7611% y en la b2ms un total de 32.8231% esto debido a que tenemos mas recursos para hacer los cálculos de la aplicación**
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
-
+* ![Pruebas](https://i.ibb.co/F6JFRGX/pruebas3.png)
 ### Parte 2 - Escalabilidad horizontal
 
 #### Crear el Balanceador de Carga
@@ -171,9 +239,17 @@ Realice este proceso para las 3 VMs, por ahora lo haremos a mano una por una, si
 http://52.155.223.248/
 http://52.155.223.248/fibonacci/1
 ```
-
+> **Pruebas:**
+* ![Hello world](https://i.ibb.co/GsCMs6d/load-Balancer1.png)
+* ![prueba2](https://i.ibb.co/KjnXvRW/load-Balancer2.png)
 2. Realice las pruebas de carga con `newman` que se realizaron en la parte 1 y haga un informe comparativo donde contraste: tiempos de respuesta, cantidad de peticiones respondidas con éxito, costos de las 2 infraestrucruras, es decir, la que desarrollamos con balanceo de carga horizontal y la que se hizo con una maquina virtual escalada.
-
+### Informe
+> **Parte 1**
+* ![prueba](https://i.ibb.co/LCXsmzp/Pruebas1.png)
+> **Parte 2**
+* ![prueba2](https://i.ibb.co/dJN3jgs/pruebas4-Segunda-Parte.png)
+> **Cuadro Comparativo**
+*  ![Cuadro Comparativo](https://i.ibb.co/Vt9Wn0h/tabal.png)
 3. Agregue una 4 maquina virtual y realice las pruebas de newman, pero esta vez no lance 2 peticiones en paralelo, sino que incrementelo a 4. Haga un informe donde presente el comportamiento de la CPU de las 4 VM y explique porque la tasa de éxito de las peticiones aumento con este estilo de escalabilidad.
 
 ```
@@ -182,7 +258,14 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
 ```
-
+> **VM 1**
+* ![prueba2](https://i.ibb.co/QcS718m/VM1.png)
+> **VM 2**
+* ![prueba2](https://i.ibb.co/ZNJ7dDf/VM2.png)
+> **VM 3**
+* ![prueba2](https://i.ibb.co/8PR9Xyp/VM3.png)
+> **VM 4**
+* ![prueba2](https://i.ibb.co/yFcLpMb/VM4.png)
 **Preguntas**
 
 * ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
