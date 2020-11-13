@@ -268,15 +268,41 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 * ![prueba2](https://i.ibb.co/yFcLpMb/VM4.png)
 **Preguntas**
 
-* ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
-* ¿Cuál es el propósito del *Backend Pool*?
-* ¿Cuál es el propósito del *Health Probe*?
-* ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
-* ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?
-* ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?
-* ¿Cuál es el propósito del *Network Security Group*?
+1. ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
+
+ * Balanceadores de carga Interno: Este balanceador de carga funciona dentro de una red privada la cual solo utilizan las ip de la misma. Su funcionalidad es de equilibrar la carga del tráfico.
+ 
+ * Balanceador de carga público: A diferencia del anterior las ip son publicas y el puerto de entrado son asignados a la dirección privada.
+ *	SKU Son las unidades de mantenimiento de existencias, son un código único asignado a un servicio de   azure. Tenemos varios tipos como: 
+   >*	Estándar: Son productos estándar y se pueden vender individualmente o en paquetes conjuntos.
+   >*	Componente: Son productos incluidos en los paquetes, ensamblajes y colecciones, no pueden venderse individualmente
+   >*	Paquete: No es necesario ensamblar antes del envío, debe haber disponibilidad completa y diferentes fuentes de cumplimiento.
+>*	Virtual: Son productos que no necesitan instalación física, y no requieren un nivel de inventario.
+>*	Ensamblaje: Se refieren a productos que se deben ensamblar antes del envío, todos los SKU deben estar dentro de la misma instalación esta debe ser local o de un proveedor Dropship/JIT/3PL.
+>*	Paquete: No es necesario ensamblar antes del envío, debe haber disponibilidad completa y diferentes fuentes de cumplimiento.
+
+2. ¿Cuál es el propósito del *Backend Pool*
+   *Es un componente del balanceador de carga el cual es el encargado de agrupar todas nuestras instancias de la aplicación y nos sirve para saber el estado de nuestras de las mismas 
+3. ¿Cuál es el propósito del *Health Probe*?
+*Es un componente del balanceador de carga el cual es el encargado de saber si las instancias dentro del Backend Pool están en correcto estado, si alguna de ellas llega a fallar un numero determinado de veces entonces el Health Probe dejara de redirigir el trafico hacia ella hasta que vuelva el funcionamiento correcto.
+4. ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
+* Un Load Balancing Rule se utiliza par definir el trafico a nuestras instancias los tipos de sesión presistente son:
+>* None (hash-based): Esta regla tarta que una vez se establece la conexión con el cliente la instancia no cambiara hasta que se desconecte y se vuelva a conectar. 
+>* Client IP (source IP affinity 2-tuple o 3-tuple): En esta regla hace que las peticiones sucesivas de una misma ip serán gestionadas por la misma instancia.
+5. ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?
+* Virtual Network: Es una tecnología de red que permite extender la red de área local sobre una red pública o no controlada (Internet). permite enviar y recibir datos sobre redes compartidas o públicas comportandose como una red privada aprovechando la funcionalidad, seguridad y políticas de gestión de una red privada. se implementan realizando conexiones dedicadas y/o cifrado.
+* 	Subnet: Es una segmentación de la red virtual (o cualquier red en general), permiten asignar una o varias subredes a la misma, estas subredes cuentan con un rango de direcciones apropiadas para una organización adecuada.
+* 	Address space: Cuando se crea una red virtual, se debe especificar un rango de direcciones ip privadas personalizadas (RFC 1918). Azure asigna a los recursos de una red virtual una dirección IP privada desde el espacio de direcciones que asigne. Por ejemplo, si implementa una máquina virtual en una red virtual con espacio de direcciones, 10.0.0.0/16, a la máquina virtual se le asignará una dirección IP privada como 10.0.0.4.
+* 	Address range: Indica cuantas direcciones se tienen en un address space y dependiendo de la cantidad de recursos que se necesiten en la red virtual, el rango aumentará o disminuirá.
+
+6. ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?
+*	Availability Zone: Son Ubicaciones geográficas únicas dentro de una región. Cada zona se compone de uno o más centros de datos equipados con alimentación, refrigeración y redes independientes. Seleccionamos 3 zonas de disponibilidad diferentes para poder tener una mejor disponibiliad y tolerancia a fallos dentro del sistema. En caso de que falle alguno de los centros de datos anteriormente mencionados, el loadbalancer utilizará otro nodo de la red que se encontrará ubicado en otra ubicación geográfica, de esta manera se garantiza resiliencia y se disminuye la probabilidad de que el sistema se encuentre no disponible.
+*	IP zone-redundant: aporta resistencia, escalabilidad y disponibilidad a nuestro sistema, cuando utilizamos una ip zone-redundant azure separa física y lógicamente el gateway dentro de una region, lo cual permite mejorar la conectividad de la red privada y disminuye fallos a nivel de zona de disponibilidad.
+
+7. ¿Cuál es el propósito del *Network Security Group*?
+* Permite filtrar el tráfico hacia y desde los recursos en una red virtual de Azure, un grupo de seguridad permite definir reglas de entrada y/o salida que permitan o denieguen el tráfico de red entrante o saliente de varios tipos de recursos de Azure.
 * Informe de newman 1 (Punto 2)
-* Presente el Diagrama de Despliegue de la solución.
+8. Presente el Diagrama de Despliegue de la solución.
 
 
 
