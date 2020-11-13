@@ -303,6 +303,7 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 * Permite filtrar el tráfico hacia y desde los recursos en una red virtual de Azure, un grupo de seguridad permite definir reglas de entrada y/o salida que permitan o denieguen el tráfico de red entrante o saliente de varios tipos de recursos de Azure.
 * Informe de newman 1 (Punto 2)
 8. Presente el Diagrama de Despliegue de la solución.
+![](https://github.com/jose-gome/ARSW-LAB8/blob/main/images/DiagramaDespiegue.png)
 
 
 
